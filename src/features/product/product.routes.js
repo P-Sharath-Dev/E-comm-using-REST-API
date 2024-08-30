@@ -1,7 +1,6 @@
 import express from 'express';
-
-//add product controller
 import ProductController from './product.controller.js';
+import fileUpload from '../../middlewares/product/fileUpload.middleware.js';
 
 //creating instance of productController
 const productController = new ProductController();
@@ -16,7 +15,7 @@ router.get('/filter', productController.getFilteredProducts);
 router.get('/', productController.getAllProducts);
 
 // domainName.com/api/product/   (req.body)
-router.post('/', productController.addProduct);
+router.post('/',fileUpload.single('imageUrl'), productController.addProduct);
 
 // domainName.com/api/product/id  (req.params)
 router.get('/:id', productController.getProductById);
@@ -24,7 +23,7 @@ router.get('/:id', productController.getProductById);
 
 //home work
 // domainName.com/api/product/id
-router.put('/:id', productController.updateProduct);
+router.put('/:id',fileUpload.single('imageUrl'), productController.updateProduct);
 
 // domainName.com/api/product/id
 router.delete('/:id', productController.deleteProduct);

@@ -10,7 +10,6 @@ export default class ProductController{
     //get a product
     getProductById(req,res){
         const productId = req.params.id;
-        console.log(productId);
 
         const product = ProductModel.getProductById(productId);
 
@@ -25,7 +24,8 @@ export default class ProductController{
     //add product
     addProduct(req,res){
         console.log(req.body);
-        const{name, description, imageUrl, category, price} = req.body;
+        const{name, description, category, price} = req.body;
+        const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
         ProductModel.addProduct(name, description, imageUrl, category, price);
         const products = ProductModel.getAllProducts();
         return res.status(201).json(products);
@@ -43,9 +43,19 @@ export default class ProductController{
     updateProduct(req,res){
         console.log(req.body);
         const productId = req.params.id;
-        const updateProduct = ProductModel.updateProduct(productId, req.body);
-        if(updateProduct){
-            return res.status(201).json(updateProduct);
+
+        const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : req.body.imageUrl;
+
+        const updatedData = {
+            name : req.body.name,
+            description : req.body.description,
+            imageUrl : imageUrl,
+            category : req.body.category,
+            price : req.body.price
+        }
+        const updatedProduct = ProductModel.updateProduct(productId, updatedData);
+        if(updatedProduct){
+            return res.status(201).json(updatedProduct);
         }
         else {
             return res.status(404).send('Product not found!');
