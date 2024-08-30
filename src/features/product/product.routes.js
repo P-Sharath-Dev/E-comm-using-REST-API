@@ -24,7 +24,7 @@ router.get('/:id', productController.getProductById);
 
 //home work
 // domainName.com/api/product/id
-router.post('/:id', productController.updateProduct);
+router.put('/:id', productController.updateProduct);
 
 // domainName.com/api/product/id
 router.delete('/:id', productController.deleteProduct);
