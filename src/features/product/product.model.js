@@ -42,6 +42,22 @@ export default class ProductModel{
         });
         return filteredProducts;
     }
+
+    //update product
+    static updateProduct(id, updatedData){
+        const product = products.find(p=> p.id == id);
+        if(product){
+            product.name = updatedData.name || product.name;
+            product.description = updatedData.description || product.description;
+            product.imageUrl = updatedData.imageUrl || product.imageUrl;
+            product.category = updatedData.category || product.category;
+            product.price = updatedData.price || product.price;
+            return product;
+        }
+        else{
+            return null;
+        }
+    }
 }
 
 const products = [

@@ -15,7 +15,7 @@ export default class ProductController{
         const product = ProductModel.getProductById(productId);
 
         if(product){
-            return res.status(200).send(product);
+            return res.status(200).json(product);
         }
         else{
             return res.status(404).send('product not found!!!!!!!!!!');
@@ -36,11 +36,20 @@ export default class ProductController{
         console.log("req.query", req.query);
         const {minPrice, maxPrice, category} = req.query;
         const filteredProducts = ProductModel.getfilteredProducts(minPrice, maxPrice, category);
-        return res.status(301).send(filteredProducts);
+        return res.status(301).json(filteredProducts);
     }
 
     //update product
     updateProduct(req,res){
+        console.log(req.body);
+        const productId = req.params.id;
+        const updateProduct = ProductModel.updateProduct(productId, req.body);
+        if(updateProduct){
+            return res.status(201).json(updateProduct);
+        }
+        else {
+            return res.status(404).send('Product not found!');
+        }
 
     }
 
