@@ -58,6 +58,18 @@ export default class ProductModel{
             return null;
         }
     }
+
+    //deleting product
+    static deleteProduct(id){
+        const index = products.findIndex(p => p.id == id);
+        if(index !== -1){
+            products.splice(index,1);
+            return true; // if product deleted successfully return true
+        }
+        else{
+            return false; // if product not deleted return false
+        }
+    }
 }
 
 const products = [
