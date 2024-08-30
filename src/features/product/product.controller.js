@@ -56,5 +56,17 @@ export default class ProductController{
     //delete product
     deleteProduct(req,res){
 
+        //stroing id 
+        const productId = req.params.id;
+
+        const isDeleted = ProductModel.deleteProduct(productId);//we get true/false from this method
+
+        if(isDeleted){
+            const products = ProductModel.getAllProducts();
+            return res.status(201).json(products);
+        }
+        else{
+            return res.status(404).send("no product found");
+        }
     }
 }
