@@ -24,8 +24,10 @@ export default class ProductController{
     //add product
     addProduct(req,res){
         console.log(req.body);
+
         const{name, description, category, price} = req.body;
         const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
+
         ProductModel.addProduct(name, description, imageUrl, category, price);
         const products = ProductModel.getAllProducts();
         return res.status(201).json(products);

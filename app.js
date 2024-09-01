@@ -1,6 +1,6 @@
 import express, { json } from 'express';
 import porductRoutes from './src/features/product/product.routes.js';
-import fileUpload from './src/middlewares/product/fileUpload.middleware.js';
+import userRoutes from './src/features/user/user.routes.js';
 
 const app = express()
 const port = 3000
@@ -10,6 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 
 app.use('/api/product',porductRoutes);
+
+app.use('/api/user', userRoutes)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
