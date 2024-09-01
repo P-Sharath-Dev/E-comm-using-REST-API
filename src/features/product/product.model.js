@@ -12,7 +12,7 @@ export default class ProductModel{
     static getAllProducts(){
         return products;
     }
-
+    
     //adding product
     static addProduct(_name, _description, _imageUrl, _category, _price){
         const newProduct = new ProductModel(
