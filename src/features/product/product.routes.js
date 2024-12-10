@@ -6,7 +6,7 @@ import fileUpload from '../../middlewares/product/fileUpload.middleware.js';
 const productController = new ProductController();
 
 const router = express.Router();
-
+ 
 //filtering products (req.query)
 // domainName.com/api/product/filter?name=value&anotherName=value2
 router.get('/filter', productController.getFilteredProducts);
@@ -20,7 +20,6 @@ router.post('/',fileUpload.single('imageUrl'), productController.addProduct);
 // domainName.com/api/product/id  (req.params)
 router.get('/:id', productController.getProductById);
 
-
 //home work
 // domainName.com/api/product/id
 router.put('/:id',fileUpload.single('imageUrl'), productController.updateProduct);
@@ -28,5 +27,7 @@ router.put('/:id',fileUpload.single('imageUrl'), productController.updateProduct
 // domainName.com/api/product/id
 router.delete('/:id', productController.deleteProduct);
 
+// domainName.com/api/product/rate  (req.body)
+router.post('/rate', productController.rateProduct);
 
 export default router;

@@ -1,3 +1,4 @@
+import UserModel from '../user/user.model.js'
 export default class ProductModel{
     constructor(_id, _name, _description, _imageUrl, _category, _price){
         this.id = _id;
@@ -6,7 +7,7 @@ export default class ProductModel{
         this.imageUrl = _imageUrl;
         this.category = _category;
         this.price = _price;
-    }
+    } 
 
     //return all products
     static getAllProducts(){
@@ -70,6 +71,43 @@ export default class ProductModel{
             return false; // if product not deleted return false
         }
     }
+
+    //rate products out of 5
+    static rateProduct(rating, userId, productId){
+        // 1.  validate if product exists with that id :-
+        const productFound = products.find((p) => p.id === productId );
+        if (!productFound) {
+            console.log(`Product with ID ${productId} not found`);
+            return "product not found";
+        }
+
+        // 2. validate if user exists with that user id :-
+        const users = UserModel.getAllUsers();
+        const userFound = users.find((user) => user.id === userId );
+        if (!userFound) {
+            return "user not found";
+        }
+
+        // 3. add rating for the product
+            // check if rating array exists 
+            if(!productFound.ratings){
+                productFound.ratings = [];
+                productFound.ratings.push({userId , rating});
+            } 
+            else {
+                //check if same user has already rated for product (update rating)
+                const existingRatingIndex = productFound.ratings.findIndex((rating) => rating.userId === userId );
+                if(existingRatingIndex != -1) {
+                    productFound.ratings[existingRatingIndex] = {userId , rating};
+                } else {
+                   //add new rating to existing rating array
+                    productFound.ratings.push({userId , rating});
+                }
+
+            }
+            console.log(`Updated ratings for product ${productId}:`, productFound.ratings);
+    }
+
 }
 
 const products = [

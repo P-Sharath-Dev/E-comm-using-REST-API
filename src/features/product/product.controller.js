@@ -41,6 +41,27 @@ export default class ProductController{
         return res.status(301).json(filteredProducts);
     }
 
+    // rate produt
+    rateProduct(req, res){
+        //destructuring
+        const {rating, productId} = req.body;
+        const userId = req.userId;
+        if(!rating || !productId){
+            return res.status(400).send("bad request");
+        }
+        //  rating  between 1 and 5
+        if (rating < 1 || rating > 5) {
+            return res.status(400).send("Rating must be 1 to 5 only");
+        }
+        const error = ProductModel.rateProduct(rating, userId, productId);
+        if (error) {
+            return res.status(400).send("error", error);
+        }
+
+        return res.status(200).send("rating added successfully")
+        
+    }
+
     //update product
     updateProduct(req,res){
         console.log(req.body);
