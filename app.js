@@ -7,14 +7,34 @@ import jwtAuth from './src/middlewares/user/jwt.middleware.js';
 import swaggerUi from 'swagger-ui-express';
 //import swaggerDocument from './swagger.json' assert {type : "json"};
 import swaggerDocument from './swagger3.json' assert {type : "json"};
+import cors from "cors";
 
 const app = express()
 const port = 3000
+
+//CORS library/package
+const corsOptions = {
+  origin : 'http://127.0.0.1:5500',
+  optionSuccessStatus : 200
+}
+app.use(cors());
 
 app.use(express.json());
 
 //parsing the data
 app.use(express.urlencoded({extended : true}));
+
+//handle CORS
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Orign', "http://127.0.0.1:5500");
+//   res.header('Access-Control-Allow-Headers', "http://127.0.0.1:5500");
+//   res.header('Access-Control-Allow-Methods', "http://127.0.0.1:5500");
+//   if (req.method == "OPTIONS") {
+//     res.sendStatus(200);
+//   }
+//   next();
+// })
+
 
 //swagger docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
