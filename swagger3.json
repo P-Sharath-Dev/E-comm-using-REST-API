@@ -14,7 +14,7 @@
     "components" : {
         "securitySchemes" : {
             "JWT" : {
-                "in" : "heaer",
+                "in" : "header",
                 "name" : "Authorization",
                 "type" : "apiKey"
             }
@@ -23,24 +23,7 @@
 
     "paths" : 
     {
-        "/api/products" : {
-            "get" : 
-            {
-                "tags" : ["products"],
-                "summary" : "get products.",
-                "security" : [{"JWT" : {}}],
-                "responses" : {
-                    "200" : {
-                        "description" : "OK"
-                    },
-                    "400" : {
-                        "description" : "unauthorized"
-                    }
-                }
-            }
-        },
-
-        "/api/users/login" : 
+        "/api/user/login" : 
         {
             "post" : 
             {
@@ -72,6 +55,22 @@
                     },
                     "400" : {
                         "description" : ""
+                    }
+                }
+            }
+        },
+        "/api/product" : {
+            "get" : 
+            {
+                "tags" : ["products"],
+                "summary" : "get products.",
+                "security" : [{"JWT" : {}}],
+                "responses" : {
+                    "200" : {
+                        "description" : "OK"
+                    },
+                    "400" : {
+                        "description" : "unauthorized"
                     }
                 }
             }

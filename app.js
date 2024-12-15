@@ -24,11 +24,16 @@ app.use('/api/product',jwtAuth, porductRoutes);
 
 app.use('/api/cart', jwtAuth, cartRoutes);
 
-app.use('/api/user', userRoutes)
+app.use('/api/user', userRoutes);
 
 app.get('/', (req, res)=>{
   res.send("hello from rest api");
-})
+});
+
+//send error message if user provided route does'nt match  with the available routes
+app.use((req, res)=> {
+  res.status(404).send("Page Not Found, check our API docs here : localhost:3000/");
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
