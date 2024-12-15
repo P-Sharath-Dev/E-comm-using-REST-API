@@ -1,0 +1,81 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "E-commerce API",
+        "description": "API for E-commerce application.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url" : "http://localhost:3000"
+        }
+    ],
+
+    "components" : {
+        "securitySchemes" : {
+            "JWT" : {
+                "in" : "heaer",
+                "name" : "Authorization",
+                "type" : "apiKey"
+            }
+        }
+    },
+
+    "paths" : 
+    {
+        "/api/products" : {
+            "get" : 
+            {
+                "tags" : ["products"],
+                "summary" : "get products.",
+                "security" : [{"JWT" : {}}],
+                "responses" : {
+                    "200" : {
+                        "description" : "OK"
+                    },
+                    "400" : {
+                        "description" : "unauthorized"
+                    }
+                }
+            }
+        },
+
+        "/api/users/login" : 
+        {
+            "post" : 
+            {
+                "tags" : ["users"],
+                "summary" : "login",
+                "description" : "user login to get token",
+                "requestBody" : 
+                {
+                    "content" : 
+                    {
+                        "application/json" : {
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "email": {
+                                    "type": "string"
+                                    },
+                                "password": {
+                                    "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses" : {
+                    "200" : {
+                        "description" : "OK"
+                    },
+                    "400" : {
+                        "description" : ""
+                    }
+                }
+            }
+        }
+    }
+}
+

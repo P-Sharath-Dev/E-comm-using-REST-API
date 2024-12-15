@@ -12,7 +12,7 @@ router.get('/', cartItemController.getAllCartItems);
 // domainName.com/api/cart?productId=1&quantity=1   (req.query)
 router.post('/', cartItemController.addCartItem);
 
-// domainName.com/api/cart?productId=1&quantity=1   (req.params)
+// domainName.com/api/cart/2  (req.params)
 router.delete('/:id', cartItemController.deleteCartItem);
 
  export default router;
