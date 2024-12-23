@@ -1,7 +1,7 @@
 import ProductModel from "./product.model.js";
 
 export default class ProductController{
-    //get all products
+    //get all products{}
     getAllProducts(req,res){
         const products = ProductModel.getAllProducts();
         return res.status(200).json(products);
@@ -53,13 +53,13 @@ export default class ProductController{
         if (rating < 1 || rating > 5) {
             return res.status(400).send("Rating must be 1 to 5 only");
         }
-        const error = ProductModel.rateProduct(rating, userId, productId);
-        if (error) {
-            return res.status(400).send("error", error);
-        }
-
-        return res.status(200).send("rating added successfully")
-        
+        //try{
+            ProductModel.rateProduct(rating, userId, productId);
+            return res.status(200).send("rating added successfully")
+        //}catch(e){
+        //    console.log(`error : ${e}`)
+        //    return res.status(400).send(e.message);
+        //}
     }
 
     //update product

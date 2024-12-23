@@ -1,4 +1,6 @@
 import UserModel from '../user/user.model.js'
+import ApplicationError from '../../error_handler/app.error.js'
+
 export default class ProductModel{
     constructor(_id, _name, _description, _imageUrl, _category, _price){
         this.id = _id;
@@ -77,15 +79,14 @@ export default class ProductModel{
         // 1.  validate if product exists with that id :-
         const productFound = products.find((p) => p.id === productId );
         if (!productFound) {
-            console.log(`Product with ID ${productId} not found`);
-            return "product not found";
+            throw new ApplicationError(404, `Product with ID ${productId} not found`);
         }
 
         // 2. validate if user exists with that user id :-
         const users = UserModel.getAllUsers();
         const userFound = users.find((user) => user.id === userId );
         if (!userFound) {
-            return "user not found";
+            throw new ApplicationError(404, `User with ID ${userId} not found`);
         }
 
         // 3. add rating for the product

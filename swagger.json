@@ -8,7 +8,7 @@
     "host": "localhost:3000",
     "securityDefinitions" : {
         "JWT" : {
-            "in" : "heaer",
+            "in" : "header",
             "name" : "Authorization",
             "type" : "apiKey"
         }

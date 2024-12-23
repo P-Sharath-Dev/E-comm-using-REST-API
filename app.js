@@ -8,6 +8,8 @@ import swaggerUi from 'swagger-ui-express';
 //import swaggerDocument from './swagger.json' assert {type : "json"};
 import swaggerDocument from './swagger3.json' assert {type : "json"};
 import cors from "cors";
+import logger from './src/middlewares/user/logger.middleware.js';
+import ApplicationError from './src/error_handler/app.error.js';
 
 const app = express()
 const port = 3000
@@ -40,11 +42,14 @@ app.use(express.urlencoded({extended : true}));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //app.use('/api/product',basicAuth, porductRoutes);
+app.use('/api/user', userRoutes);
+
+app.use(logger);
+
 app.use('/api/product',jwtAuth, porductRoutes);
 
 app.use('/api/cart', jwtAuth, cartRoutes);
 
-app.use('/api/user', userRoutes);
 
 app.get('/', (req, res)=>{
   res.send("hello from rest api");
@@ -52,8 +57,18 @@ app.get('/', (req, res)=>{
 
 //send error message if user provided route does'nt match  with the available routes
 app.use((req, res)=> {
-  res.status(404).send("Page Not Found, check our API docs here : localhost:3000/");
+  res.status(404).send("Page Not Found, check our API docs here : localhost:3000/api-docs");
 });
+
+//error handling middleware
+app.use((err, req, res, next) => {
+  if (err instanceof ApplicationError) {
+    const {code, message} = err;
+    res.status(code).send(message);
+  }
+  console.error(err.stack);
+  res.status(500).send("something went wrong!");
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
