@@ -13,7 +13,6 @@ import ApplicationError from "./src/error_handler/app.error.js";
 
 //database
 import { MongoClient } from "mongodb";
-import { cli } from "winston/lib/winston/config/index.js";
 
 const app = express();
 const port = 3000;
@@ -30,11 +29,11 @@ const dbName = "Movies";
 async function main() {
   //connect method to connect to db
   await client.connect();
-  //console.log("connected successfully database");
+  console.log("connected successfully to database");
   const db = client.db(dbName);
   const collection = db.collection("highest_rated");
   const movies = await collection.find({}).toArray();
-  //console.log("found doucment => : ", movies);
+  console.log("found doucment => : ", movies);
   return "done.";
 }
 
