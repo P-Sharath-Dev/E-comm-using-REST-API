@@ -18,7 +18,20 @@ class UserRepository {
     } catch (e) {
       const errorMessage = `Error in UserRepository signUp: ${e.message}`;
       errorLogger.error(errorMessage);
-      throw new ApplicationError(500, "something went wrong");
+      console.log(e);
+    }
+  }
+  static async getByEmail(email) {
+    try {
+      console.log("email from getByEmail in repositoyr", email);
+      const db = getDataBase();
+      const collection = db.collection("users");
+      return await collection.findOne({ email });
+    } catch (e) {
+      const errorMessage = `Error in UserRepository mail: ${e.message}`;
+      errorLogger.error(errorMessage);
+      console.log(e);
+      //throw new ApplicationError(500, "something went wrong");
     }
   }
 }

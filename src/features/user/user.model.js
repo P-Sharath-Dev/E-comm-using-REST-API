@@ -14,6 +14,7 @@ export default class UserModel {
     );
     return user;
   }
+
   //   static async signUp(name, email, password, type) {
   //     const newUser = new UserModel(name, email, password, type);
   //     //1 get E-Commerce db

@@ -18,15 +18,7 @@ const winstonLogger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
   defaultMeta: { service: "E-commerce app" },
-  transports: [
-    //
-    // - Write all logs with importance level of `error` or higher to `error.log`
-    //   (i.e., error, fatal, but not other levels)
-    //
-    //new winston.transports.File({ filename: 'error.log', level: 'error' }),
-
-    new winston.transports.File({ filename: "logs.txt" }),
-  ],
+  transports: [new winston.transports.File({ filename: "logs.txt" })],
 });
 
 // Winston Logger for Error Logs

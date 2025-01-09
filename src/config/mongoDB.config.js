@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { errorLogger } from "../middlewares/user/logger.middleware.js";
 
 //connection URL
 const url = "mongodb://localhost:27017/E-Commerce";
@@ -18,6 +19,8 @@ export async function connectToDB() {
     //const db = client.db();
     db = client.db(); //Assign the database instance
   } catch (e) {
+    const errorMessage = `Error from mongoDB connection: ${e.message}`;
+    errorLogger.error(errorMessage);
     console.log("Error connecting to the database:", e);
   }
   //   const collection = db.collection("highest_rated");
