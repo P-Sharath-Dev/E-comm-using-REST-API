@@ -1,6 +1,6 @@
-import exp from 'constants';
-import fs from 'fs';
-import winston from 'winston';
+import exp from "constants";
+import fs from "fs";
+import winston from "winston";
 
 const fsPromise = fs.promises;
 
@@ -15,31 +15,43 @@ const fsPromise = fs.promises;
 // }
 
 const winstonLogger = winston.createLogger({
-    level: 'info',
-    format: winston.format.json(),
-    defaultMeta: { service: 'E-commerce app' },
-    transports: [
-      //
-      // - Write all logs with importance level of `error` or higher to `error.log`
-      //   (i.e., error, fatal, but not other levels)
-      //
-      //new winston.transports.File({ filename: 'error.log', level: 'error' }),
-      
-      new winston.transports.File({ filename: 'logs.txt' }),
-    ],
-  });
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { service: "E-commerce app" },
+  transports: [
+    //
+    // - Write all logs with importance level of `error` or higher to `error.log`
+    //   (i.e., error, fatal, but not other levels)
+    //
+    //new winston.transports.File({ filename: 'error.log', level: 'error' }),
 
-const logger = async (req, res, next)=>{
+    new winston.transports.File({ filename: "logs.txt" }),
+  ],
+});
 
-    //method to write req to file : logs.txt
-    //check for login/signin path
-    // if (!req.url.includes('user')) {
-    //     await addLog(req.body, req.originalUrl);        
-    // }
-    // await addLog(req.body, req.originalUrl);   
-    const data = `\n Time :${new Date().toString()},reqBody: ${JSON.stringify(req.body)}, from Url : ${req.url}`;
-    winstonLogger.info(data);
-    next();
-}
+// Winston Logger for Error Logs
+const errorLogger = winston.createLogger({
+  level: "error",
+  format: winston.format.json(),
+  defaultMeta: { service: "E-commerce app" },
+  transports: [
+    new winston.transports.File({ filename: "errors.log" }), // Error logs
+  ],
+});
 
+const logger = async (req, res, next) => {
+  //method to write req to file : logs.txt
+  //check for login/signin path
+  // if (!req.url.includes('user')) {
+  //     await addLog(req.body, req.originalUrl);
+  // }
+  // await addLog(req.body, req.originalUrl);
+  const data = `\n Time :${new Date().toString()},reqBody: ${JSON.stringify(
+    req.body
+  )}, from Url : ${req.url}`;
+  winstonLogger.info(data);
+  next();
+};
+
+export { winstonLogger, errorLogger };
 export default logger;

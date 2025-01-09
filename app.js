@@ -10,9 +10,12 @@ import swaggerDocument from "./swagger3.json" assert { type: "json" };
 import cors from "cors";
 import logger from "./src/middlewares/user/logger.middleware.js";
 import ApplicationError from "./src/error_handler/app.error.js";
+import { connectToDB } from "./src/config/mongoDB.config.js";
 
 const app = express();
 const port = 3000;
+
+connectToDB();
 
 //CORS library/package
 const corsOptions = {

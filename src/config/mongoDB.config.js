@@ -1,29 +1,35 @@
-//database
 import { MongoClient } from "mongodb";
 
-//********************database starts Here***
-
-//creating connection to database
-const client = new MongoClient("mongodb://localhost:27017/");
+//connection URL
+const url = "mongodb://localhost:27017/E-Commerce";
+const client = new MongoClient(url);
 
 //database name
-const dbName = "Movies";
+//const dbName = "Movies";
+let db;
 
 //function for client to connect to db
-async function main() {
+export async function connectToDB() {
   //connect method to connect to db
-  await client.connect();
-  console.log("connected successfully to database");
-  const db = client.db(dbName);
-  const collection = db.collection("highest_rated");
-  const movies = await collection.find({}).toArray();
-  console.log("found doucment => : ", movies);
-  return "done.";
+  try {
+    await client.connect();
+    console.log("connected successfully to database");
+    //const db = client.db(dbName);
+    //const db = client.db();
+    db = client.db(); //Assign the database instance
+  } catch (e) {
+    console.log("Error connecting to the database:", e);
+  }
+  //   const collection = db.collection("highest_rated");
+  //   const movies = await collection.find({}).toArray();
+  //   console.log("found doucment => : ", movies);
+  //   return "done.";
 }
 
-main()
-  .then(console.log)
-  .catch(console.error)
-  .finally(() => client.close);
-
-//**********************database ends Here***
+export function getDataBase() {
+  if (!db) {
+    throw new Error("Database is not initialized. Call connectToDB first.");
+  }
+  return db;
+  //return client.db();
+}
