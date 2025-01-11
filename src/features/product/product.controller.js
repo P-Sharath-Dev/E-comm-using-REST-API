@@ -1,47 +1,87 @@
 import ProductModel from "./product.model.js";
+import ProductRepository from "./product.repository.js";
+import { errorLogger } from "../../middlewares/user/logger.middleware.js";
+import ApplicationError from "../../error_handler/app.error.js";
 
 export default class ProductController {
-  //get all products{}
-  getAllProducts(req, res) {
-    const products = ProductModel.getAllProducts();
-    return res.status(200).json(products);
+  constructor() {
+    this.productRepository = new ProductRepository();
   }
+  //add product
+  async addProduct(req, res) {
+    try {
+      console.log(req.body);
 
-  //get a product
-  getProductById(req, res) {
-    const productId = req.params.id;
+      const { name, description, category, price } = req.body;
+      const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
 
-    const product = ProductModel.getProductById(productId);
-
-    if (product) {
-      return res.status(200).json(product);
-    } else {
-      return res.status(404).send("product not found!!!!!!!!!!");
+      const product = new ProductModel(
+        name,
+        description,
+        imageUrl,
+        category,
+        price
+      );
+      const addedProduct = await this.productRepository.addProduct(product);
+      return res
+        .status(201)
+        .send({ message: "product added", productId: addedProduct.insertedId });
+    } catch (e) {
+      const errorMessage = `Error in productController all products: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
     }
   }
 
-  //add product
-  addProduct(req, res) {
-    console.log(req.body);
+  //get all products{}
+  async getAllProducts(req, res) {
+    try {
+      const products = await this.productRepository.getAllProducts();
+      return res.status(200).json(products);
+    } catch (e) {
+      const errorMessage = `Error in productController all products: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
 
-    const { name, description, category, price } = req.body;
-    const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
+  //get a product
+  async getProductById(req, res) {
+    try {
+      const productId = req.params.id;
+      const product = await this.productRepository.getProductById(productId);
 
-    ProductModel.addProduct(name, description, imageUrl, category, price);
-    const products = ProductModel.getAllProducts();
-    return res.status(201).json(products);
+      if (!product) {
+        return res.status(404).send("Product not found");
+      }
+      return res.status(200).json(product);
+    } catch (e) {
+      const errorMessage = `Error in productController product by id: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
   }
 
   //filtering products
   getFilteredProducts(req, res) {
-    console.log("req.query", req.query);
-    const { minPrice, maxPrice, category } = req.query;
-    const filteredProducts = ProductModel.getfilteredProducts(
-      minPrice,
-      maxPrice,
-      category
-    );
-    return res.status(301).json(filteredProducts);
+    try {
+      //console.log("req.query", req.query);
+      const { minPrice, maxPrice, category } = req.query;
+      const filteredProducts = ProductModel.getfilteredProducts(
+        minPrice,
+        maxPrice,
+        category
+      );
+      return res.status(301).json(filteredProducts);
+    } catch (e) {
+      const errorMessage = `Error in productController filtered products: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
   }
 
   // rate produt
@@ -66,41 +106,70 @@ export default class ProductController {
   }
 
   //update product
-  updateProduct(req, res) {
-    console.log(req.body);
+  async updateProduct(req, res) {
+    //console.log(req.body);
     const productId = req.params.id;
+    //check if no fields are provided to update
 
-    const imageUrl = req.file
-      ? `/imageFiles/${req.file.filename}`
-      : req.body.imageUrl;
-
+    // console.log("product id from controller : ", productId);
+    //getting the product with id
+    const productToUpdate = await this.productRepository.getProductById(
+      productId
+    );
+    // console.log("productToUpdate from controller : ", productToUpdate);
+    if (!productToUpdate) {
+      return res.status(404).send("Product not found");
+    }
+    if (
+      !req.body.name &&
+      !req.body.description &&
+      !req.file &&
+      !req.body.category &&
+      !req.body.price
+    ) {
+      return res.status(400).send("enter data to update");
+    }
     const updatedData = {
-      name: req.body.name,
-      description: req.body.description,
-      imageUrl: imageUrl,
-      category: req.body.category,
-      price: req.body.price,
+      name: req.body.name || productToUpdate.name,
+      description: req.body.description || productToUpdate.name,
+      imageUrl: req.file
+        ? `/imageFiles/${req.file.filename}`
+        : productToUpdate.imageUrl,
+      category: req.body.category || productToUpdate.category,
+      price: req.body.price || productToUpdate.price,
     };
-    const updatedProduct = ProductModel.updateProduct(productId, updatedData);
+
+    const updatedProduct = await this.productRepository.updateProduct(
+      productId,
+      updatedData
+    );
     if (updatedProduct) {
       return res.status(201).json(updatedProduct);
     } else {
-      return res.status(404).send("Product not found!");
+      return res.status(404).send("Product not found");
     }
   }
 
   //delete product
-  deleteProduct(req, res) {
-    //stroing id
-    const productId = req.params.id;
+  async deleteProduct(req, res) {
+    try {
+      const productId = req.params.id;
+      //console.log("Product ID from controller:", productId);
 
-    const isDeleted = ProductModel.deleteProduct(productId); //we get true/false from this method
+      // Call the repository method to delete the product
+      const isDeleted = await this.productRepository.deleteProduct(productId);
 
-    if (isDeleted) {
-      const products = ProductModel.getAllProducts();
-      return res.status(201).json(products);
-    } else {
-      return res.status(404).send("no product found");
+      if (isDeleted) {
+        const products = await this.productRepository.getAllProducts();
+        return res.status(200).json(products);
+      } else {
+        return res.status(404).send("Product not found");
+      }
+    } catch (e) {
+      const errorMessage = `Error in product controller delete: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
     }
   }
 }

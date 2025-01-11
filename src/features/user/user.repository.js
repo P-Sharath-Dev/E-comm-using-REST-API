@@ -19,6 +19,7 @@ class UserRepository {
       const errorMessage = `Error in UserRepository signUp: ${e.message}`;
       errorLogger.error(errorMessage);
       console.log(e);
+      throw new ApplicationError(500, "something went wrong");
     }
   }
   async getByEmail(email) {
@@ -30,7 +31,7 @@ class UserRepository {
       const errorMessage = `Error in UserRepository mail: ${e.message}`;
       errorLogger.error(errorMessage);
       console.log(e);
-      //throw new ApplicationError(500, "something went wrong");
+      throw new ApplicationError(500, "something went wrong");
     }
   }
 }

@@ -1,33 +1,45 @@
-import express from 'express';
-import ProductController from './product.controller.js';
-import fileUpload from '../../middlewares/product/fileUpload.middleware.js';
+import express from "express";
+import ProductController from "./product.controller.js";
+import fileUpload from "../../middlewares/product/fileUpload.middleware.js";
 
 //creating instance of productController
 const productController = new ProductController();
 
 const router = express.Router();
- 
+
 //filtering products (req.query)
 // domainName.com/api/product/filter?name=value&anotherName=value2
-router.get('/filter', productController.getFilteredProducts);
+router.get("/filter", productController.getFilteredProducts);
 
 // domainName.com/api/product/
-router.get('/', productController.getAllProducts);
+// router.get("/", productController.getAllProducts);
+router.get("/", (req, res) => {
+  productController.getAllProducts(req, res);
+});
 
 // domainName.com/api/product/   (req.body)
-router.post('/',fileUpload.single('imageUrl'), productController.addProduct);
+router.post("/", fileUpload.single("imageUrl"), (req, res) => {
+  productController.addProduct(req, res);
+});
 
 // domainName.com/api/product/id  (req.params)
-router.get('/:id', productController.getProductById);
+router.get("/:id", (req, res) => {
+  productController.getProductById(req, res);
+});
 
 //home work
 // domainName.com/api/product/id
-router.put('/:id',fileUpload.single('imageUrl'), productController.updateProduct);
+router.put("/:id", fileUpload.single("imageUrl"), (req, res) => {
+  productController.updateProduct(req, res);
+});
 
 // domainName.com/api/product/id
-router.delete('/:id', productController.deleteProduct);
+// router.delete("/:id", productController.deleteProduct);
+router.delete("/:id", (req, res) => {
+  productController.deleteProduct(req, res);
+});
 
 // domainName.com/api/product/rate  (req.body)
-router.post('/rate', productController.rateProduct);
+router.post("/rate", productController.rateProduct);
 
 export default router;

@@ -4,3 +4,41 @@
 {"level":"error","message":"Error in userController signUp: Cannot read properties of undefined (reading 'userRepository')","service":"E-commerce app"}
 {"level":"error","message":"Error in userController login: Cannot read properties of undefined (reading 'userRepository')","service":"E-commerce app"}
 {"level":"error","message":"Error in userController login: Cannot read properties of undefined (reading 'userRepository')","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Cannot read properties of undefined (reading 'productRepository')","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Cannot read properties of undefined (reading 'productRepository')","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Cannot read properties of undefined (reading 'productRepository')","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: db.collection.find is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: db.collection.find is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in userController login: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: products is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: collection.delete is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: product is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: res is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: res is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: ","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - delete product: res is not defined","service":"E-commerce app"}

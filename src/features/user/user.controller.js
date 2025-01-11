@@ -35,7 +35,8 @@ export default class userController {
     } catch (e) {
       const errorMessage = `Error in userController login: ${e.message}`;
       errorLogger.error(errorMessage);
-      //console.log(e);
+      console.log(e);
+      throw new ApplicationError(500, "something went wrong");
     }
   }
 
