@@ -5,13 +5,16 @@ import { errorLogger } from "../../middlewares/user/logger.middleware.js";
 import bcrypt from "bcrypt";
 
 export default class userController {
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
   //login
   async login(req, res) {
     try {
       const { email, password } = req.body;
 
       //1 check if user exists
-      const user = await UserRepository.getByEmail(email);
+      const user = await this.userRepository.getByEmail(email);
       if (!user) {
         return res.status(400).send("email not found");
       }
@@ -44,7 +47,7 @@ export default class userController {
       // console.log("Hashed password:", hashPassword);
 
       const user = new UserModel(name, email, hashPassword, type);
-      const createdUser = await UserRepository.signUp(user);
+      const createdUser = await this.userRepository.signUp(user);
       // console.log("createdUsed from user.controller : ", createdUser);
       return res.status(201).send(user);
     } catch (e) {

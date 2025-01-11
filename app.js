@@ -1,4 +1,7 @@
 import express, { json } from "express";
+import "dotenv/config";
+// console.log("process.env.DB_URL", process.env.DB_URL);
+// console.log("process.env.SECRET_KEY", process.env.SECRET_KEY);
 import porductRoutes from "./src/features/product/product.routes.js";
 import userRoutes from "./src/features/user/user.routes.js";
 import cartRoutes from "./src/features/cart/cartItem.routes.js";

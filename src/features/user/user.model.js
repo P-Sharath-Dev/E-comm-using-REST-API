@@ -8,12 +8,12 @@ export default class UserModel {
     this.type = _type;
   }
 
-  static login(email, password) {
-    const user = users.find(
-      (user) => user.email == email && user.password == password
-    );
-    return user;
-  }
+  // static login(email, password) {
+  //   const user = users.find(
+  //     (user) => user.email == email && user.password == password
+  //   );
+  //   return user;
+  // }
 
   //   static async signUp(name, email, password, type) {
   //     const newUser = new UserModel(name, email, password, type);
@@ -31,19 +31,19 @@ export default class UserModel {
   }
 }
 
-export const users = [
-  {
-    id: 1,
-    name: "Seller",
-    email: "seller@gmail.com",
-    password: 12345,
-    type: "seller",
-  },
-  {
-    id: 2,
-    name: "Customer",
-    email: "customer@gmail.com",
-    password: 12345,
-    type: "customer",
-  },
-];
+// export const users = [
+//   {
+//     id: 1,
+//     name: "Seller",
+//     email: "seller@gmail.com",
+//     password: 12345,
+//     type: "seller",
+//   },
+//   {
+//     id: 2,
+//     name: "Customer",
+//     email: "customer@gmail.com",
+//     password: 12345,
+//     type: "customer",
+//   },
+// ];

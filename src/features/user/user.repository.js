@@ -3,7 +3,7 @@ import { getDataBase } from "../../config/mongoDB.config.js";
 import { errorLogger } from "../../middlewares/user/logger.middleware.js";
 
 class UserRepository {
-  static async signUp(newUser) {
+  async signUp(newUser) {
     try {
       console.log("newUser from UserRepository : ", newUser);
       //1 get E-Commerce db
@@ -21,9 +21,8 @@ class UserRepository {
       console.log(e);
     }
   }
-  static async getByEmail(email) {
+  async getByEmail(email) {
     try {
-      console.log("email from getByEmail in repositoyr", email);
       const db = getDataBase();
       const collection = db.collection("users");
       return await collection.findOne({ email });

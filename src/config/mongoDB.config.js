@@ -2,7 +2,8 @@ import { MongoClient } from "mongodb";
 import { errorLogger } from "../middlewares/user/logger.middleware.js";
 
 //connection URL
-const url = "mongodb://localhost:27017/E-Commerce";
+const url = process.env.DB_URL;
+
 const client = new MongoClient(url);
 
 //database name
