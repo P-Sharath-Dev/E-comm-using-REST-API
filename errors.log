@@ -42,3 +42,9 @@
 {"level":"error","message":"Error in ProductRepository get product by id: input must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository - delete product: ","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository - delete product: res is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: collection is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: collection is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in productController filtered products: something went wrong","service":"E-commerce app"}
+{"level":"error","message":"Error in productController all products: Assignment to constant variable.","service":"E-commerce app"}
+{"level":"error","message":"Error in productController all products: Assignment to constant variable.","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: product not found","service":"E-commerce app"}

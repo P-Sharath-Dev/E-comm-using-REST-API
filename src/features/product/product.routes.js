@@ -9,7 +9,10 @@ const router = express.Router();
 
 //filtering products (req.query)
 // domainName.com/api/product/filter?name=value&anotherName=value2
-router.get("/filter", productController.getFilteredProducts);
+// router.get("/filter", productController.getFilteredProducts);
+router.get("/filter", (req, res) => {
+  productController.getFilteredProducts(req, res);
+});
 
 // domainName.com/api/product/
 // router.get("/", productController.getAllProducts);

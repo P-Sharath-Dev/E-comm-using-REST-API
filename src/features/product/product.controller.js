@@ -13,6 +13,8 @@ export default class ProductController {
       console.log(req.body);
 
       const { name, description, category, price } = req.body;
+      const priceInNumber = Number(price);
+      console.log(typeof price);
       const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
 
       const product = new ProductModel(
@@ -20,7 +22,7 @@ export default class ProductController {
         description,
         imageUrl,
         category,
-        price
+        priceInNumber
       );
       const addedProduct = await this.productRepository.addProduct(product);
       return res
@@ -66,16 +68,35 @@ export default class ProductController {
   }
 
   //filtering products
-  getFilteredProducts(req, res) {
+  async getFilteredProducts(req, res) {
     try {
       //console.log("req.query", req.query);
       const { minPrice, maxPrice, category } = req.query;
-      const filteredProducts = ProductModel.getfilteredProducts(
-        minPrice,
-        maxPrice,
+      // const filteredProducts = ProductModel.getfilteredProducts(
+      //   minPrice,
+      //   maxPrice,
+      //   category
+      // );
+
+      // Ensure at least one field is provided
+      if (!minPrice && !maxPrice && !category) {
+        return res
+          .status(400)
+          .send("At least field must be provided to filter");
+      }
+      // Convert prices to numbers if they are provided
+      const minPriceNum = minPrice ? Number(minPrice) : null;
+      const maxPriceNum = maxPrice ? Number(maxPrice) : null;
+
+      const filteredProducts = await this.productRepository.getFilteredProducts(
+        minPriceNum,
+        maxPriceNum,
         category
       );
-      return res.status(301).json(filteredProducts);
+      if (!filteredProducts) {
+        return res.status(404).send("no product not found");
+      }
+      return res.status(301).send(filteredProducts);
     } catch (e) {
       const errorMessage = `Error in productController filtered products: ${e.message}`;
       errorLogger.error(errorMessage);
@@ -85,7 +106,7 @@ export default class ProductController {
   }
 
   // rate produt
-  rateProduct(req, res) {
+  async rateProduct(req, res) {
     //destructuring
     const { rating, productId } = req.body;
     const userId = req.userId;
@@ -98,6 +119,7 @@ export default class ProductController {
     }
     //try{
     ProductModel.rateProduct(rating, userId, productId);
+    const addRating = await this.productRepository.rateProduct();
     return res.status(200).send("rating added successfully");
     //}catch(e){
     //    console.log(`error : ${e}`)

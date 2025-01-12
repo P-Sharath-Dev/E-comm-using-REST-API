@@ -78,8 +78,32 @@ export default class ProductRepository {
   }
 
   //***filtering products***
-  async getFilteredProducts() {
+  async getFilteredProducts(minPrice, maxPrice, category) {
     try {
+      //get database
+      const db = getDataBase();
+      //get collection
+      const collection = db.collection("products");
+      // Dynamically construct the query
+      const query = {};
+
+      if (minPrice !== null) {
+        query.price = { ...query.price, $gt: minPrice };
+      }
+
+      if (maxPrice !== null) {
+        query.price = { ...query.price, $lt: maxPrice };
+      }
+
+      if (category) {
+        query.category = category;
+      }
+      const result = await collection.find(query).toArray();
+
+      if (result.length === 0) {
+        return null;
+      }
+      return result;
     } catch (e) {
       const errorMessage = `Error in ProductRepository - get filtered products: ${e.message}`;
       errorLogger.error(errorMessage);
