@@ -1,18 +1,21 @@
 import ProductModel from "./product.model.js";
 import ProductRepository from "./product.repository.js";
 import { errorLogger } from "../../middlewares/user/logger.middleware.js";
+import UserRepository from "../user/user.repository.js";
 import ApplicationError from "../../error_handler/app.error.js";
 
 export default class ProductController {
   constructor() {
     this.productRepository = new ProductRepository();
+    this.userRepository = new UserRepository();
   }
-  //add product
+  //********add product function***********
   async addProduct(req, res) {
     try {
       console.log(req.body);
 
       const { name, description, category, price } = req.body;
+      const userId = req.userId;
       const priceInNumber = Number(price);
       console.log(typeof price);
       const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
@@ -24,6 +27,10 @@ export default class ProductController {
         category,
         priceInNumber
       );
+      const userFound = await this.userRepository.getUserById(userId);
+      if (userFound.type !== "seller") {
+        return res.status(401).send("user must be seller");
+      }
       const addedProduct = await this.productRepository.addProduct(product);
       return res
         .status(201)
@@ -36,7 +43,7 @@ export default class ProductController {
     }
   }
 
-  //get all products{}
+  //********get all products function***********
   async getAllProducts(req, res) {
     try {
       const products = await this.productRepository.getAllProducts();
@@ -49,7 +56,7 @@ export default class ProductController {
     }
   }
 
-  //get a product
+  //********get a product function***********
   async getProductById(req, res) {
     try {
       const productId = req.params.id;
@@ -67,7 +74,7 @@ export default class ProductController {
     }
   }
 
-  //filtering products
+  //********filtering products function***********
   async getFilteredProducts(req, res) {
     try {
       //console.log("req.query", req.query);
@@ -96,7 +103,7 @@ export default class ProductController {
       if (!filteredProducts) {
         return res.status(404).send("no product not found");
       }
-      return res.status(301).send(filteredProducts);
+      return res.status(200).send(filteredProducts);
     } catch (e) {
       const errorMessage = `Error in productController filtered products: ${e.message}`;
       errorLogger.error(errorMessage);
@@ -105,36 +112,63 @@ export default class ProductController {
     }
   }
 
-  // rate produt
+  //******** rate produt function***********
   async rateProduct(req, res) {
-    //destructuring
-    const { rating, productId } = req.body;
-    const userId = req.userId;
-    if (!rating || !productId) {
-      return res.status(400).send("bad request");
+    try {
+      //destructuring
+      const { rating, productId } = req.body;
+      //console.log("product id from controller : ", productId);
+      const userId = req.userId;
+      //console.log("userID from controller : ", userId);
+      const ratingNum = Number(rating);
+      //  rating  between 1 and 5
+      if (ratingNum < 1 || ratingNum > 5) {
+        return res.status(400).send("Rating must be 1 to 5 only");
+      }
+      if (!rating || !productId) {
+        return res
+          .status(400)
+          .send("please fill 'rating' and 'productId' fields");
+      }
+      const productFound = await this.productRepository.getProductById(
+        productId
+      );
+
+      //console.log("product found from controller : ", productFound);
+
+      if (!productFound) {
+        return res.status(404).send("Product not found");
+      }
+
+      const addRating = await this.productRepository.rateProduct(
+        userId,
+        productId,
+        ratingNum
+      );
+      return res.status(200).send(addRating);
+    } catch (e) {
+      const errorMessage = `Error in productController filtered products: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log("error from catch-controller : ", e);
+      throw new ApplicationError(500, "something went wrong");
     }
-    //  rating  between 1 and 5
-    if (rating < 1 || rating > 5) {
-      return res.status(400).send("Rating must be 1 to 5 only");
-    }
-    //try{
-    ProductModel.rateProduct(rating, userId, productId);
-    const addRating = await this.productRepository.rateProduct();
-    return res.status(200).send("rating added successfully");
-    //}catch(e){
-    //    console.log(`error : ${e}`)
-    //    return res.status(400).send(e.message);
-    //}
   }
 
-  //update product
+  //*******update product function************
   async updateProduct(req, res) {
     //console.log(req.body);
     const productId = req.params.id;
+    const userId = req.userId;
     //check if no fields are provided to update
 
     // console.log("product id from controller : ", productId);
     //getting the product with id
+
+    const userFound = await this.userRepository.getUserById(userId);
+    if (userFound.type !== "seller") {
+      return res.status(401).send("user must be seller");
+    }
+
     const productToUpdate = await this.productRepository.getProductById(
       productId
     );
@@ -166,24 +200,29 @@ export default class ProductController {
       updatedData
     );
     if (updatedProduct) {
-      return res.status(201).json(updatedProduct);
+      return res.status(200).json(updatedProduct);
     } else {
       return res.status(404).send("Product not found");
     }
   }
 
-  //delete product
+  //********delete product function***********
   async deleteProduct(req, res) {
     try {
       const productId = req.params.id;
-      //console.log("Product ID from controller:", productId);
+      const userId = req.userId;
 
-      // Call the repository method to delete the product
+      //check if user is seller or not
+      const userFound = await this.userRepository.getUserById(userId);
+      if (userFound.type !== "seller") {
+        return res.status(401).send("user must be seller");
+      }
+
       const isDeleted = await this.productRepository.deleteProduct(productId);
 
       if (isDeleted) {
-        const products = await this.productRepository.getAllProducts();
-        return res.status(200).json(products);
+        //const products = await this.productRepository.getAllProducts();
+        return res.status(200).json("product deleted successfully");
       } else {
         return res.status(404).send("Product not found");
       }

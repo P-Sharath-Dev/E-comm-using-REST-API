@@ -36,31 +36,31 @@ export default class ProductModel {
   // }
 
   //get filtered products
-  static getfilteredProducts(minPrice, maxPrice, category) {
-    const filteredProducts = products.filter((product) => {
-      return (
-        (!minPrice || product.price >= minPrice) &&
-        (!maxPrice || product.price <= maxPrice) &&
-        (!category || product.category == category)
-      );
-    });
-    return filteredProducts;
-  }
+  // static getfilteredProducts(minPrice, maxPrice, category) {
+  //   const filteredProducts = products.filter((product) => {
+  //     return (
+  //       (!minPrice || product.price >= minPrice) &&
+  //       (!maxPrice || product.price <= maxPrice) &&
+  //       (!category || product.category == category)
+  //     );
+  //   });
+  //   return filteredProducts;
+  // }
 
   //update product
-  static updateProduct(id, updatedData) {
-    const product = products.find((p) => p.id == id);
-    if (product) {
-      product.name = updatedData.name || product.name;
-      product.description = updatedData.description || product.description;
-      product.imageUrl = updatedData.imageUrl || product.imageUrl;
-      product.category = updatedData.category || product.category;
-      product.price = updatedData.price || product.price;
-      return product;
-    } else {
-      return null;
-    }
-  }
+  // static updateProduct(id, updatedData) {
+  //   const product = products.find((p) => p.id == id);
+  //   if (product) {
+  //     product.name = updatedData.name || product.name;
+  //     product.description = updatedData.description || product.description;
+  //     product.imageUrl = updatedData.imageUrl || product.imageUrl;
+  //     product.category = updatedData.category || product.category;
+  //     product.price = updatedData.price || product.price;
+  //     return product;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   // //deleting product
   // static deleteProduct(id) {
@@ -74,42 +74,42 @@ export default class ProductModel {
   // }
 
   //rate products out of 5
-  static rateProduct(rating, userId, productId) {
-    // 1.  validate if product exists with that id :-
-    const productFound = products.find((p) => p.id === productId);
-    if (!productFound) {
-      throw new ApplicationError(404, `Product with ID ${productId} not found`);
-    }
+  // static rateProduct(rating, userId, productId) {
+  //   // 1.  validate if product exists with that id :-
+  //   const productFound = products.find((p) => p.id === productId);
+  //   if (!productFound) {
+  //     throw new ApplicationError(404, `Product with ID ${productId} not found`);
+  //   }
 
-    // 2. validate if user exists with that user id :-
-    const users = UserModel.getAllUsers();
-    const userFound = users.find((user) => user.id === userId);
-    if (!userFound) {
-      throw new ApplicationError(404, `User with ID ${userId} not found`);
-    }
+  //   // 2. validate if user exists with that user id :-
+  //   const users = UserModel.getAllUsers();
+  //   const userFound = users.find((user) => user.id === userId);
+  //   if (!userFound) {
+  //     throw new ApplicationError(404, `User with ID ${userId} not found`);
+  //   }
 
-    // 3. add rating for the product
-    // check if rating array exists
-    if (!productFound.ratings) {
-      productFound.ratings = [];
-      productFound.ratings.push({ userId, rating });
-    } else {
-      //check if same user has already rated for product (update rating)
-      const existingRatingIndex = productFound.ratings.findIndex(
-        (rating) => rating.userId === userId
-      );
-      if (existingRatingIndex != -1) {
-        productFound.ratings[existingRatingIndex] = { userId, rating };
-      } else {
-        //add new rating to existing rating array
-        productFound.ratings.push({ userId, rating });
-      }
-    }
-    console.log(
-      `Updated ratings for product ${productId}:`,
-      productFound.ratings
-    );
-  }
+  //   // 3. add rating for the product
+  //   // check if rating array exists
+  //   if (!productFound.ratings) {
+  //     productFound.ratings = [];
+  //     productFound.ratings.push({ userId, rating });
+  //   } else {
+  //     //check if same user has already rated for product (update rating)
+  //     const existingRatingIndex = productFound.ratings.findIndex(
+  //       (rating) => rating.userId === userId
+  //     );
+  //     if (existingRatingIndex != -1) {
+  //       productFound.ratings[existingRatingIndex] = { userId, rating };
+  //     } else {
+  //       //add new rating to existing rating array
+  //       productFound.ratings.push({ userId, rating });
+  //     }
+  //   }
+  //   console.log(
+  //     `Updated ratings for product ${productId}:`,
+  //     productFound.ratings
+  //   );
+  // }
 }
 
 // const products = [

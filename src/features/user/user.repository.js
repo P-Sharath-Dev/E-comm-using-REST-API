@@ -1,6 +1,7 @@
 import ApplicationError from "../../error_handler/app.error.js";
 import { getDataBase } from "../../config/mongoDB.config.js";
 import { errorLogger } from "../../middlewares/user/logger.middleware.js";
+import { ObjectId } from "mongodb";
 
 class UserRepository {
   async signUp(newUser) {
@@ -29,6 +30,23 @@ class UserRepository {
       return await collection.findOne({ email });
     } catch (e) {
       const errorMessage = `Error in UserRepository mail: ${e.message}`;
+      errorLogger.error(errorMessage);
+      console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  async getUserById(userId) {
+    try {
+      const db = getDataBase();
+      const collection = db.collection("users");
+      const result = await collection.findOne({ _id: new ObjectId(userId) });
+      if (!result) {
+        return "user Not Found";
+      }
+      return result;
+    } catch (e) {
+      const errorMessage = `Error in UserRepository get user by id: ${e.message}`;
       errorLogger.error(errorMessage);
       console.log(e);
       throw new ApplicationError(500, "something went wrong");

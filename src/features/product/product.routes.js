@@ -43,6 +43,9 @@ router.delete("/:id", (req, res) => {
 });
 
 // domainName.com/api/product/rate  (req.body)
-router.post("/rate", productController.rateProduct);
+// router.post("/rate", productController.rateProduct);
+router.post("/rate", (req, res) => {
+  productController.rateProduct(req, res);
+});
 
 export default router;

@@ -27,10 +27,11 @@ export default class userController {
 
       //create token (when user email and password are correct)
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user._id.toString(), email: user.email },
         "LJ6jaSuuScTh3xPSS5xkhZJx1gmMWm05",
         { expiresIn: "1h" }
       );
+      //add console to log tokem from line : 29
       return res.status(200).send({ token, msg: "logged in successfully" });
     } catch (e) {
       const errorMessage = `Error in userController login: ${e.message}`;
@@ -53,6 +54,21 @@ export default class userController {
       return res.status(201).send(user);
     } catch (e) {
       const errorMessage = `Error in userController signUp: ${e.message}`;
+      errorLogger.error(errorMessage);
+      next(e);
+    }
+  }
+
+  async getUserById(req, res) {
+    try {
+      const userId = req.userId;
+      const userFound = await this.userRepository.getById(userId);
+      if (!userFound) {
+        throw new ApplicationError(404, "User not found");
+      }
+      return userFound;
+    } catch (e) {
+      const errorMessage = `Error in userController getUserById: ${e.message}`;
       errorLogger.error(errorMessage);
       next(e);
     }

@@ -14,7 +14,7 @@ router.post("/login", (req, res) => {
 
 // domainName.com/api/user/signup   (req.body)
 // router.post("/signup", userController.signup);
-router.post("/login", (req, res) => {
+router.post("/signup", (req, res) => {
   userController.signup(req, res);
 });
 

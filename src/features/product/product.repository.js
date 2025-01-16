@@ -113,8 +113,24 @@ export default class ProductRepository {
   }
 
   //***rate product***
-  async rateProduct() {
+  async rateProduct(userId, productId, rating) {
     try {
+      //console.log("product from repository : ", product);
+      console.log("check productid : ", productId);
+      console.log("userId from repository : ", userId);
+      console.log("rating from repository : ", rating);
+      //get database
+      const db = getDataBase();
+      //get collection
+      const collection = db.collection("products");
+
+      const addRating = await collection.updateOne(
+        { _id: new ObjectId(productId) }, // Filter by _id (productId)
+        { $set: { rate: { rating, userId: new ObjectId(userId) } } }, // Update rate field
+        { upsert: false } //setting upsert as false so that it wont create new document
+      );
+      console.log("add rating from repository : ", addRating);
+      return addRating;
     } catch (e) {
       const errorMessage = `Error in ProductRepository - rate product: ${e.message}`;
       errorLogger.error(errorMessage);
