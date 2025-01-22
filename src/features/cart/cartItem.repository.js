@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 import { getDataBase } from "../../config/mongoDB.config.js";
 
 export default class CartItemRepository {
@@ -8,13 +8,24 @@ export default class CartItemRepository {
       const db = getDataBase();
       //get collection
       const collection = db.collection("cart_items");
-      //using upsert... it can either insert or update document. here it checking if userId and poductId
-      // if both are present in database it will only update quantity else
-      // it will insert document
-      // without upsert we need to check if userid and productid are present and then write db query based on that
+      /*
+      using upsert... it can either insert or update document. here it checking if userId and poductId
+       if both are present in database it will only update quantity else
+       it will insert document
+       without upsert we need to check if userid and productid are present and then write db query based on that
+      */
+
+      /*
+      ***These lines are for customId***
+        const document = await this.getNextCounterForId(db);
+        console.log("document.count from add repository : ", document.count);
+      */
       return await collection.updateOne(
         { userId: new ObjectId(userId), productId: new ObjectId(productId) },
-        { $inc: { quantity } },
+        {
+          //$setOnInsert: { _id: document.count }, //***sets count value as id only while inserting***---***this line is for customId***
+          $inc: { quantity },
+        },
         { upsert: true }
       );
     } catch (e) {
@@ -64,4 +75,21 @@ export default class CartItemRepository {
       throw new ApplicationError(500, "something went wrong");
     }
   }
+  /*
+  ***This code is for incrementing count value for customId***
+  async getNextCounterForId(db) {
+    try {
+      const document = await db.collection("counters").findOneAndUpdate(
+        { _id: "cartItem" },
+        { $inc: { count: 1 } },
+        { returnDocument: "after" } // Ensure this resolves to a valid value
+      );
+
+      console.log("Document returned by findOneAndUpdate:", document);
+      return document;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  */
 }

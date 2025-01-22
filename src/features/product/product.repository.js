@@ -116,9 +116,9 @@ export default class ProductRepository {
   async rateProduct(userId, productId, rating) {
     try {
       //console.log("product from repository : ", product);
-      console.log("check productid : ", productId);
-      console.log("userId from repository : ", userId);
-      console.log("rating from repository : ", rating);
+      // console.log("check productid : ", productId);
+      // console.log("userId from repository : ", userId);
+      // console.log("rating from repository : ", rating);
       //get database
       const db = getDataBase();
       //get collection

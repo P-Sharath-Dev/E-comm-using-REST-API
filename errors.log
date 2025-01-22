@@ -1,2 +1,9 @@
 {"level":"error","message":"Error in cartController : Cannot read properties of undefined (reading 'cartItemRepository')","service":"E-commerce app"}
 {"level":"error","message":"Error in cartController : Cannot read properties of undefined (reading 'cartItemRepository')","service":"E-commerce app"}
+{"level":"error","message":"Error in cartRepository: document is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in cartRepository: document is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in cartRepository: document is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in cartRepository: document is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in cartRepository: Cannot read properties of undefined (reading 'count')","service":"E-commerce app"}
+{"level":"error","message":"Error in cartRepository: Cannot read properties of null (reading 'count')","service":"E-commerce app"}
+{"level":"error","message":"Error in cartController add cartItem : errorLogger is not defined","service":"E-commerce app"}

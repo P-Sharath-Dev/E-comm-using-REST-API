@@ -19,6 +19,8 @@ export async function connectToDB() {
     //const db = client.db(dbName);
     //const db = client.db();
     db = client.db(); //Assign the database instance
+
+    //createIdCounter(db);  ***this line is for customId***
   } catch (e) {
     const errorMessage = `Error from mongoDB connection: ${e.message}`;
     errorLogger.error(errorMessage);
@@ -37,3 +39,15 @@ export function getDataBase() {
   return db;
   //return client.db();
 }
+/*
+  ***This code is for creatin counters collection for customId***
+
+const createIdCounter = async (db) => {
+  const existingCounter = await db
+    .collection("counters")
+    .findOne({ _id: "cartItem" });
+  if (!existingCounter) {
+    await db.collection("counters").insertOne({ _id: "cartItem", count: 0 });
+  }
+};
+*/
