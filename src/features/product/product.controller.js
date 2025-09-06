@@ -79,20 +79,20 @@ export default class ProductController {
     try {
       //console.log("req.query", req.query);
       const { minPrice, maxPrice, category } = req.query;
-      // const filteredProducts = ProductModel.getfilteredProducts(
+      // const filteredProducts = await this.productRepository.getFilteredProducts(
       //   minPrice,
       //   maxPrice,
       //   category
       // );
 
-      // Ensure at least one field is provided
-      if (!minPrice && !maxPrice && !category) {
-        return res
-          .status(400)
-          .send("At least field must be provided to filter");
-      }
+      //Ensure at least one field is provided
+      // if (!minPrice && !maxPrice && !category) {
+      //   return res
+      //     .status(400)
+      //     .send("At least one field must be provided to filter");
+      // }
       // Convert prices to numbers if they are provided
-      const minPriceNum = minPrice ? Number(minPrice) : null;
+      const minPriceNum = minPrice ? Number(minPrice) : null; //we get price as string so we are converting it to a number
       const maxPriceNum = maxPrice ? Number(maxPrice) : null;
 
       const filteredProducts = await this.productRepository.getFilteredProducts(
@@ -144,8 +144,9 @@ export default class ProductController {
         userId,
         productId,
         ratingNum
+        //productFound
       );
-      return res.status(200).send(addRating);
+      return res.status(200).send("added Rating successfully");
     } catch (e) {
       const errorMessage = `Error in productController filtered products: ${e.message}`;
       errorLogger.error(errorMessage);

@@ -22,7 +22,7 @@ export async function connectToDB() {
     db = client.db(); //Assign the database instance
 
     //createIdCounter(db);  ***this line is for customId***
-    createIndex(db);
+    //createIndex(db);
   } catch (e) {
     const errorMessage = `Error from mongoDB connection: ${e.message}`;
     errorLogger.error(errorMessage);
@@ -56,17 +56,17 @@ const createIdCounter = async (db) => {
 
 //creating indexes
 
-const createIndex = async (db) => {
-  try {
-    await db.collection("products").createIndex({ price: 1 }); //this creats index in ascending order
-    //const indexes = db.collection("products").getIndexes();
-    // console.log("products-indexes :-  ", indexes);
-    //await db.collection("products").dropIndex("price_1"); // this drops(means deletes) the index
-    await db.collection("products").createIndex({ name: 1, category: -1 }); // this creates multiple indexes. here we are creating indexes for 'name'(assinding), 'category'(descending)
-    db.collection("products").createIndex({ description: "text" }); // this creates index wiht the name I provided
-  } catch (e) {
-    const errorMessage = `Error from mongoDB connection: ${e.message}`;
-    errorLogger.error(errorMessage);
-    console.log("Error connecting to the database:", e);
-  }
-};
+// const createIndex = async (db) => {
+//   try {
+//     await db.collection("products").createIndex({ price: 1 }); //this creats index in ascending order
+//     //const indexes = db.collection("products").getIndexes();
+//     // console.log("products-indexes :-  ", indexes);
+//     //await db.collection("products").dropIndex("price_1"); // this drops(means deletes) the index
+//     await db.collection("products").createIndex({ name: 1, category: -1 }); // this creates multiple indexes. here we are creating indexes for 'name'(assinding), 'category'(descending)
+//     db.collection("products").createIndex({ description: "text" }); // this creates index wiht the name I provided
+//   } catch (e) {
+//     const errorMessage = `Error from mongoDB connection: ${e.message}`;
+//     errorLogger.error(errorMessage);
+//     console.log("Error connecting to the database:", e);
+//   }
+// };

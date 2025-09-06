@@ -59,7 +59,7 @@ export default class ProductRepository {
 
       // Check if the product exists with the given ID
       const product = await collection.findOne({
-        _id: new ObjectId(id),
+        _id: ObjectId.createFromHexString(id),
       });
       if (!product) {
         //console.log("Product not found");
@@ -87,12 +87,13 @@ export default class ProductRepository {
       // Dynamically construct the query
       const query = {};
 
-      if (minPrice !== null) {
-        query.price = { ...query.price, $gt: minPrice };
+      if (minPrice) {
+        query.price = { $gte: minPrice };
       }
 
-      if (maxPrice !== null) {
-        query.price = { ...query.price, $lt: maxPrice };
+      if (maxPrice) {
+        // (in DB we have price only, not min, max price.) so used spread operator so that minPrice will not be overidden by maxPrice.
+        query.price = { ...query.price, $lte: maxPrice };
       }
 
       if (category) {
@@ -113,24 +114,82 @@ export default class ProductRepository {
   }
 
   //***rate product***
+  // async rateProduct(userId, productId, rating, productFound) {
+  //   try {
+  //     //get database
+  //     const db = getDataBase();
+  //     //get collection
+  //     const collection = db.collection("products");
+
+  //     // const productFound = await collection.findOne({
+  //     //   _id: ObjectId.createFromHexString(productId),
+  //     // });
+  //     if (!productFound) {
+  //       throw new ApplicationError(404, "product not found");
+  //     }
+
+  //     const userRating = productFound.ratings?.find(
+  //       (ratingObj) => ratingObj.userId == userId
+  //     );
+
+  //     if (userRating) {
+  //       // User already rated → update rating
+  //       await collection.updateOne(
+  //         {
+  //           _id: ObjectId.createFromHexString(productId), //productFound._id is an object but ObjectId.createFromHexString() requires
+  //           "ratings.userId": ObjectId.createFromHexString(userId), // string to check and then returns a new ObjectId.
+  //         },
+  //         { $set: { "ratings.$.rating": rating } }
+  //       );
+  //     } else {
+  //       // User hasn't rated → push new rating
+  //       await collection.updateOne(
+  //         { _id: ObjectId.createFromHexString(productId) },
+  //         {
+  //           $push: {
+  //             ratings: { rating, userId: ObjectId.createFromHexString(userId) },
+  //           },
+  //         }
+  //       );
+  //     }
+  //   } catch (e) {
+  //     const errorMessage = `Error in ProductRepository - rate product: ${e.message}`;
+  //     errorLogger.error(errorMessage);
+  //     //console.log(e);
+  //     throw new ApplicationError(500, "something went wrong");
+  //   }
+  // }
+
+  //clean version of rateProduct. above one is not that easy to understand
   async rateProduct(userId, productId, rating) {
     try {
-      //console.log("product from repository : ", product);
-      // console.log("check productid : ", productId);
-      // console.log("userId from repository : ", userId);
-      // console.log("rating from repository : ", rating);
       //get database
       const db = getDataBase();
+
       //get collection
       const collection = db.collection("products");
 
-      const addRating = await collection.updateOne(
-        { _id: new ObjectId(productId) }, // Filter by _id (productId)
-        { $set: { rate: { rating, userId: new ObjectId(userId) } } }, // Update rate field
-        { upsert: false } //setting upsert as false so that it wont create new document
+      //rate product
+      //******pull(remove) existing rating
+      await collection.updateOne(
+        { _id: ObjectId.createFromHexString(productId) },
+        {
+          $pull: { rating: { userId: ObjectId.createFromHexString(userId) } }, // removes rating if user tries to rate again and
+        }
       );
-      console.log("add rating from repository : ", addRating);
-      return addRating;
+      //******push new rating
+      await collection.updateOne(
+        { _id: ObjectId.createFromHexString(productId) },
+        {
+          $push: {
+            // adds new rating for the product
+            rating: {
+              rating: rating,
+              userId: ObjectId.createFromHexString(userId),
+            },
+          },
+        }
+      );
     } catch (e) {
       const errorMessage = `Error in ProductRepository - rate product: ${e.message}`;
       errorLogger.error(errorMessage);
@@ -152,7 +211,7 @@ export default class ProductRepository {
       //get collection
       const collection = db.collection("products");
       const updatedProduct = await collection.updateOne(
-        { _id: new ObjectId(id) },
+        { _id: ObjectId.createFromHexString(id) },
         { $set: data }
       );
       return updatedProduct;
@@ -179,7 +238,7 @@ export default class ProductRepository {
       //inserting product into collection
       //console.log("id from repository : ", id);
       const result = await collection.deleteOne({
-        _id: new ObjectId(id),
+        _id: ObjectId.createFromHexString(id),
       });
 
       // Check if any document was deleted
