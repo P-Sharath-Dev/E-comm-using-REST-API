@@ -49,3 +49,14 @@
 {"level":"error","message":"Error in ProductRepository - rate product: hex string must be 24 characters","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository - rate product: Cannot read properties of undefined (reading '_id')","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository - rate product: hex string must be 24 characters","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'c', \"[cat2]\" is not valid JSON","service":"E-commerce app"}

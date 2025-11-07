@@ -79,6 +79,7 @@ export default class ProductController {
     try {
       //console.log("req.query", req.query);
       const { minPrice, maxPrice, category } = req.query;
+
       // const filteredProducts = await this.productRepository.getFilteredProducts(
       //   minPrice,
       //   maxPrice,

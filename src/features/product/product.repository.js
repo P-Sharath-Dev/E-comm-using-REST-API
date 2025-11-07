@@ -86,7 +86,6 @@ export default class ProductRepository {
       const collection = db.collection("products");
       // Dynamically construct the query
       const query = {};
-
       if (minPrice) {
         query.price = { $gte: minPrice };
       }
@@ -97,9 +96,14 @@ export default class ProductRepository {
       }
 
       if (category) {
-        query.category = category;
+        // query.category = category;
+
+        // Convert category string (expected as JSON array, e.g. '["electronics","clothing"]')
+        // into a JavaScript array, so we can use it with MongoDB's $in operator.
+
+        query.category = { $in: JSON.parse(category) };
       }
-      const result = await collection.find(query).toArray();
+      const result = await collection.find(query).project({ _id: 0 }).toArray();
 
       if (result.length === 0) {
         return null;
