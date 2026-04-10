@@ -26,7 +26,7 @@ export default class CartItemRepository {
           //$setOnInsert: { _id: document.count }, //***sets count value as id only while inserting***---***this line is for customId***
           $inc: { quantity },
         },
-        { upsert: true }
+        { upsert: true },
       );
     } catch (e) {
       const errorMessage = `Error in cartRepository: ${e.message}`;

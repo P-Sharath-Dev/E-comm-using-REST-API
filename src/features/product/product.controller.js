@@ -25,7 +25,7 @@ export default class ProductController {
         description,
         imageUrl,
         category,
-        priceInNumber
+        priceInNumber,
       );
       const userFound = await this.userRepository.getUserById(userId);
       if (userFound.type !== "seller") {
@@ -99,7 +99,7 @@ export default class ProductController {
       const filteredProducts = await this.productRepository.getFilteredProducts(
         minPriceNum,
         maxPriceNum,
-        category
+        category,
       );
       if (!filteredProducts) {
         return res.status(404).send("no product not found");
@@ -131,20 +131,11 @@ export default class ProductController {
           .status(400)
           .send("please fill 'rating' and 'productId' fields");
       }
-      const productFound = await this.productRepository.getProductById(
-        productId
-      );
-
-      //console.log("product found from controller : ", productFound);
-
-      if (!productFound) {
-        return res.status(404).send("Product not found");
-      }
 
       const addRating = await this.productRepository.rateProduct(
         userId,
         productId,
-        ratingNum
+        ratingNum,
         //productFound
       );
       return res.status(200).send("added Rating successfully");
@@ -171,9 +162,8 @@ export default class ProductController {
       return res.status(401).send("user must be seller");
     }
 
-    const productToUpdate = await this.productRepository.getProductById(
-      productId
-    );
+    const productToUpdate =
+      await this.productRepository.getProductById(productId);
     // console.log("productToUpdate from controller : ", productToUpdate);
     if (!productToUpdate) {
       return res.status(404).send("Product not found");
@@ -199,7 +189,7 @@ export default class ProductController {
 
     const updatedProduct = await this.productRepository.updateProduct(
       productId,
-      updatedData
+      updatedData,
     );
     if (updatedProduct) {
       return res.status(200).json(updatedProduct);
@@ -230,6 +220,23 @@ export default class ProductController {
       }
     } catch (e) {
       const errorMessage = `Error in product controller delete: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  //aggregation average price
+  async avgPrice(req, res) {
+    //console.log("productController.avgPrice called");
+    try {
+      console.log("productController.avgPrice called");
+      const result =
+        await this.productRepository.averageProductPricePerCategory();
+      console.log("result from avgPrice->in product controller :- ", result);
+      return res.status(200).send(result);
+    } catch (e) {
+      const errorMessage = `Error in productController product by id: ${e.message}`;
       errorLogger.error(errorMessage);
       //console.log(e);
       throw new ApplicationError(500, "something went wrong");

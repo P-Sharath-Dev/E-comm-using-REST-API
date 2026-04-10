@@ -20,6 +20,11 @@ router.get("/", (req, res) => {
   productController.getAllProducts(req, res);
 });
 
+//average product price per category
+router.get("/averagePrice", (req, res) => {
+  productController.avgPrice(req, res);
+});
+
 // domainName.com/api/product/   (req.body)
 router.post("/", fileUpload.single("imageUrl"), (req, res) => {
   productController.addProduct(req, res);

@@ -33,7 +33,7 @@ export default class ProductRepository {
       //get collection
       const collection = db.collection("products");
       //inserting product into collection
-      const products = await collection.find().toArray();
+      const products = await collection.find().project({ _id: 0 }).toArray();
       //console.log("products : ", products);
       return products;
     } catch (e) {
@@ -97,13 +97,32 @@ export default class ProductRepository {
 
       if (category) {
         // query.category = category;
+        // If the user sends multiple categories in the query
+        // (like sending two categories -- mobile,tv) ,
+        // we receive them as a single string( like "mobile,string" ).
+        // so, split(",") converts that string into an array ['mobile','tv'],
+        // and $in returns products whose
+        // category matches any value in that array.
 
-        // Convert category string (expected as JSON array, e.g. '["electronics","clothing"]')
-        // into a JavaScript array, so we can use it with MongoDB's $in operator.
+        // query.category = { $in: category.split(",") }; // earlier in db category was a string now chaged to an array so this commenting this line
 
-        query.category = { $in: JSON.parse(category) };
+        //$in operator
+        query.category = { $in: JSON.parse(category) }; //we get category as an array but in string form. (ex:- '['mobile','tv']'). so converting it to an array using JSON.parse()
+
+        //$or operator
       }
-      const result = await collection.find(query).project({ _id: 0 }).toArray();
+
+      //project({_id}) means it will return all data except for the id. project will not return the field which we pass in the project(). here we passed _id so it will not include _id.
+      const result = await collection
+        .find(query)
+        .project({
+          _id: 0,
+          name: 1,
+          category: 1,
+          price: 1,
+          "ratings.rating": 1,
+        })
+        .toArray();
 
       if (result.length === 0) {
         return null;
@@ -173,13 +192,22 @@ export default class ProductRepository {
       //get collection
       const collection = db.collection("products");
 
+      const productFound = await collection.findOne({
+        _id: ObjectId.createFromHexString(productId),
+      });
+
+      if (!productFound) {
+        throw new ApplicationError(404, "product not found");
+      }
       //rate product
       //******pull(remove) existing rating
       await collection.updateOne(
         { _id: ObjectId.createFromHexString(productId) },
         {
+          //new ObjectId() is depricated so instead of that use
+          // ObjectId.createFromHexString(userId)
           $pull: { rating: { userId: ObjectId.createFromHexString(userId) } }, // removes rating if user tries to rate again and
-        }
+        },
       );
       //******push new rating
       await collection.updateOne(
@@ -187,12 +215,12 @@ export default class ProductRepository {
         {
           $push: {
             // adds new rating for the product
-            rating: {
+            ratings: {
               rating: rating,
               userId: ObjectId.createFromHexString(userId),
             },
           },
-        }
+        },
       );
     } catch (e) {
       const errorMessage = `Error in ProductRepository - rate product: ${e.message}`;
@@ -216,7 +244,7 @@ export default class ProductRepository {
       const collection = db.collection("products");
       const updatedProduct = await collection.updateOne(
         { _id: ObjectId.createFromHexString(id) },
-        { $set: data }
+        { $set: data },
       );
       return updatedProduct;
     } catch (e) {
@@ -255,6 +283,36 @@ export default class ProductRepository {
       }
     } catch (e) {
       const errorMessage = `Error in ProductRepository - delete product: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  //To find the average product price per caterogy
+  async averageProductPricePerCategory() {
+    //console.log("producRepository.avgPrice called");
+    try {
+      console.log("producRepository.avgPrice called");
+      //get database
+      const db = getDataBase();
+      //get collection
+      const collection = db.collection("products");
+      const data = await collection
+        .aggregate([
+          {
+            //stage1: get the average price per category
+            $group: { _id: "$category", averagePrice: { $avg: "$price" } },
+          },
+        ])
+        .toArray();
+      console.log(
+        "data from avgPricePerCat() ->in product repository :- ",
+        data,
+      );
+      return data;
+    } catch (e) {
+      const errorMessage = `Error in ProductRepository get all products: ${e.message}`;
       errorLogger.error(errorMessage);
       //console.log(e);
       throw new ApplicationError(500, "something went wrong");
