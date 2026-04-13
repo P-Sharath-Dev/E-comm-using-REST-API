@@ -76,3 +76,10 @@
 {"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 'm', \"mobile,tv\" is not valid JSON","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository - rate product: Cannot read properties of undefined (reading 'getProductById')","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository - get filtered products: Unexpected token 's', \"samsung\" is not valid JSON","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: db.collection.aggregate is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: db.collection.aggregate is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: db.collection.aggregate is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: db.collection.aggregate is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in productController product by id: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in productController product by id: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: a group specification must include an _id","service":"E-commerce app"}

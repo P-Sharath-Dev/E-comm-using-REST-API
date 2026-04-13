@@ -228,12 +228,35 @@ export default class ProductController {
 
   //aggregation average price
   async avgPrice(req, res) {
-    //console.log("productController.avgPrice called");
     try {
-      console.log("productController.avgPrice called");
       const result =
-        await this.productRepository.averageProductPricePerCategory();
-      console.log("result from avgPrice->in product controller :- ", result);
+        await this.productRepository.averageProductPricePerCategory(); //doesnt require any parameters
+      return res.status(200).send(result);
+    } catch (e) {
+      const errorMessage = `Error in productController product by id: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  //aggregation on average rating of a product
+  async avgRating(req, res) {
+    try {
+      const result = await this.productRepository.averageProductRating(); //doesnt require any parameters
+      return res.status(200).send(result);
+    } catch (e) {
+      const errorMessage = `Error in productController product by id: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  //aggregation on total no.of ratings of a product
+  async ratingCount(req, res) {
+    try {
+      const result = await this.productRepository.ratingCount(); //doesnt require any parameters
       return res.status(200).send(result);
     } catch (e) {
       const errorMessage = `Error in productController product by id: ${e.message}`;

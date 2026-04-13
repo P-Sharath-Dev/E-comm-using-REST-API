@@ -104,10 +104,10 @@ export default class ProductRepository {
         // and $in returns products whose
         // category matches any value in that array.
 
-        // query.category = { $in: category.split(",") }; // earlier in db category was a string now chaged to an array so this commenting this line
+        query.category = { $in: category.split(",") }; // earlier in db category was a string now chaged to an array so for that commenting this line
 
         //$in operator
-        query.category = { $in: JSON.parse(category) }; //we get category as an array but in string form. (ex:- '['mobile','tv']'). so converting it to an array using JSON.parse()
+        //query.category = { $in: JSON.parse(category) }; //we get category as an array but in string form. (ex:- '['mobile','tv']'). so converting it to an array using JSON.parse()
 
         //$or operator
       }
@@ -206,7 +206,7 @@ export default class ProductRepository {
         {
           //new ObjectId() is depricated so instead of that use
           // ObjectId.createFromHexString(userId)
-          $pull: { rating: { userId: ObjectId.createFromHexString(userId) } }, // removes rating if user tries to rate again and
+          $pull: { ratings: { userId: ObjectId.createFromHexString(userId) } }, // removes rating if user tries to rate again and
         },
       );
       //******push new rating
@@ -293,23 +293,95 @@ export default class ProductRepository {
   async averageProductPricePerCategory() {
     //console.log("producRepository.avgPrice called");
     try {
-      console.log("producRepository.avgPrice called");
       //get database
       const db = getDataBase();
       //get collection
       const collection = db.collection("products");
+
       const data = await collection
         .aggregate([
-          {
-            //stage1: get the average price per category
-            $group: { _id: "$category", averagePrice: { $avg: "$price" } },
-          },
+          //stage:1 -- get the average price for category
+          { $group: { _id: "$category", averagePrice: { $avg: "$price" } } },
+          //stage 2 -- sorting in ascending order based on averagePrice which was created on    stage-1
+          { $sort: { averagePrice: 1 } },
+          //stage 3 -- limiting
+          { $limit: 1 },
         ])
-        .toArray();
-      console.log(
-        "data from avgPricePerCat() ->in product repository :- ",
-        data,
-      );
+        .toArray(); // this returns cursor so converting it to array.
+      // console.log("data --- ", data);
+      return data;
+    } catch (e) {
+      const errorMessage = `Error in ProductRepository get all products: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  //Average rating of a product
+  async averageProductRating() {
+    //console.log("producRepository.avgPrice called");
+    try {
+      //get database
+      const db = getDataBase();
+      //get collection
+      const collection = db.collection("products");
+
+      const data = await collection
+        .aggregate([
+          //stage:1 -- get ratings
+          { $unwind: "$ratings" },
+          //stage 2 -- get average rating
+          {
+            $group: {
+              _id: "$name",
+              averageRating: { $avg: "$ratings.rating" },
+            },
+          },
+          //stage 3 -- getting products with average rating >=4
+          { $match: { averageRating: { $gte: 4 } } },
+        ])
+        .toArray(); // this returns cursor so converting it to array.
+      // console.log("data --- ", data);
+      return data;
+    } catch (e) {
+      const errorMessage = `Error in ProductRepository get all products: ${e.message}`;
+      errorLogger.error(errorMessage);
+      //console.log(e);
+      throw new ApplicationError(500, "something went wrong");
+    }
+  }
+
+  //find count of ratings of product
+  async ratingCount() {
+    //console.log("producRepository.avgPrice called");
+    try {
+      //get database
+      const db = getDataBase();
+      //get collection
+      const collection = db.collection("products");
+
+      const data = await collection
+        .aggregate([
+          //stage:1 -- get ratings
+          {
+            $project: {
+              name: 1,
+              ratingCount: {
+                $cond: [{ $isArray: "$ratings" }, { $size: "$ratings" }, 0],
+                //if    (condition)                {true}              {false}
+                //we can directly use $size but there will be some documents without ratings, so using condition ($cond). its like if condition.
+              },
+            },
+          },
+          //stage-2 : find the product with highest ratingCount
+          { $sort: { ratingCount: -1 } }, //this will give documents in decending order(highest to least)
+
+          //stage-3 : getting product with more ratings
+          //{ $limit: 1 }, //this will give first document after sorting
+        ])
+        .toArray(); // this returns cursor so converting it to array.
+      // console.log("data --- ", data);
       return data;
     } catch (e) {
       const errorMessage = `Error in ProductRepository get all products: ${e.message}`;

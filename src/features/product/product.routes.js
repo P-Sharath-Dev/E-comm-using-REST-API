@@ -25,6 +25,16 @@ router.get("/averagePrice", (req, res) => {
   productController.avgPrice(req, res);
 });
 
+//average rating of product
+router.get("/averageRating", (req, res) => {
+  productController.avgRating(req, res);
+});
+
+//no.of ratings of product
+router.get("/ratingsCount", (req, res) => {
+  productController.ratingCount(req, res);
+});
+
 // domainName.com/api/product/   (req.body)
 router.post("/", fileUpload.single("imageUrl"), (req, res) => {
   productController.addProduct(req, res);
