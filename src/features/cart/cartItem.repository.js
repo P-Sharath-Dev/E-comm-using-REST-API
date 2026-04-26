@@ -20,6 +20,19 @@ export default class CartItemRepository {
         const document = await this.getNextCounterForId(db);  
         console.log("document.count from add repository : ", document.count);
       */
+
+      //getting product with productId
+      const product = await db
+        .collection("products")
+        .findOne({ _id: ObjectId.createFromHexString(productId) });
+
+      //checking if product not found
+      if (!product) {
+        // Throwing a specific error so the controller can send a 404
+        //console.log("productNotFound");
+        return null;
+      }
+
       return await collection.updateOne(
         { userId: new ObjectId(userId), productId: new ObjectId(productId) },
         {

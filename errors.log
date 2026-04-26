@@ -83,3 +83,35 @@
 {"level":"error","message":"Error in productController product by id: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
 {"level":"error","message":"Error in productController product by id: Converting circular structure to JSON\n    --> starting at object with constructor 'MongoClient'\n    |     property 's' -> object with constructor 'Object'\n    |     property 'sessionPool' -> object with constructor 'ServerSessionPool'\n    --- property 'client' closes the circle","service":"E-commerce app"}
 {"level":"error","message":"Error in ProductRepository get all products: a group specification must include an _id","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: collection is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: collection is not a function","service":"E-commerce app"}
+{"level":"error","message":"Error in ProductRepository get all products: Cannot read properties of undefined (reading 'getOrderAmount')","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: PlanExecutor error during aggregation :: caused by :: $multiply only supports numeric types, not string","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Cannot read properties of undefined (reading 'ratings')","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModelodel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderController add cartItem : something went wrong","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModelodel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModelodel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModelodel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModelodel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: OrderModelodel is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error in orderController add cartItem : Transaction numbers are only allowed on a replica set member or mongos","service":"E-commerce app"}
+{"level":"error","message":"Error from mongoDB connection: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017","service":"E-commerce app"}
+{"level":"error","message":"Error in UserRepository mail: Database is not initialized. Call connectToDB first.","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: Caused by :: Write conflict during plan execution and yielding is disabled. :: Please retry your operation or multi-document transaction.","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: A pipeline stage specification object must contain exactly one field.","service":"E-commerce app"}
+{"level":"error","message":"Error in orderRepository: something went wrong","service":"E-commerce app"}
+{"level":"error","message":"Error in cartController add cartItem : errorLogger is not defined","service":"E-commerce app"}
+{"level":"error","message":"Error in cartController add cartItem : errorLogger is not defined","service":"E-commerce app"}

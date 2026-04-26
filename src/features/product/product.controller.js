@@ -14,9 +14,10 @@ export default class ProductController {
     try {
       console.log(req.body);
 
-      const { name, description, category, price } = req.body;
+      const { name, description, category, price, stock } = req.body;
       const userId = req.userId;
       const priceInNumber = Number(price);
+      const stockInNumber = Number(stock);
       console.log(typeof price);
       const imageUrl = req.file ? `/imageFiles/${req.file.filename}` : null;
 
@@ -26,6 +27,7 @@ export default class ProductController {
         imageUrl,
         category,
         priceInNumber,
+        stockInNumber,
       );
       const userFound = await this.userRepository.getUserById(userId);
       if (userFound.type !== "seller") {
@@ -173,7 +175,8 @@ export default class ProductController {
       !req.body.description &&
       !req.file &&
       !req.body.category &&
-      !req.body.price
+      !req.body.price &&
+      !req.body.stock
     ) {
       return res.status(400).send("enter data to update");
     }
@@ -185,6 +188,7 @@ export default class ProductController {
         : productToUpdate.imageUrl,
       category: req.body.category || productToUpdate.category,
       price: req.body.price || productToUpdate.price,
+      stock: req.body.stock || productToUpdate.stock,
     };
 
     const updatedProduct = await this.productRepository.updateProduct(

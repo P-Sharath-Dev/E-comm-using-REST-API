@@ -10,12 +10,13 @@ const client = new MongoClient(url);
 //database name
 //const dbName = "Movies";
 let db;
-
+let clientInstance;
 //function for client to connect to db
 export async function connectToDB() {
   //connect method to connect to db
   try {
     await client.connect();
+    clientInstance = client;
     console.log("connected successfully to database");
     //const db = client.db(dbName);
     //const db = client.db();
@@ -32,6 +33,11 @@ export async function connectToDB() {
   //   const movies = await collection.find({}).toArray();
   //   console.log("found doucment => : ", movies);
   //   return "done.";
+}
+
+//get the client for transaction
+export function getClient() {
+  return clientInstance;
 }
 
 export function getDataBase() {

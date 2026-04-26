@@ -14,6 +14,7 @@ import cors from "cors";
 import logger from "./src/middlewares/user/logger.middleware.js";
 import ApplicationError from "./src/error_handler/app.error.js";
 import { connectToDB } from "./src/config/mongoDB.config.js";
+import orderRoutes from "./src/features/order/order.routes.js";
 
 const app = express();
 const port = 3000;
@@ -48,6 +49,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //app.use('/api/product',basicAuth, porductRoutes);
 app.use("/api/user", userRoutes);
+
+//order routes
+app.use("/api/order", jwtAuth, orderRoutes);
 
 app.use(logger);
 

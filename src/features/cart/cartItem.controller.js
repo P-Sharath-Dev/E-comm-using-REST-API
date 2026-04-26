@@ -22,9 +22,13 @@ export default class CartItemController {
       const cartItemCreated = await this.cartItemRepository.add(
         userId,
         productId,
-        quantity
+        quantity,
       );
-      console.log("cartItemCreated : ", cartItemCreated);
+      //console.log("cartItemCreated : ", cartItemCreated);
+      //product not found
+      if (!cartItemCreated) {
+        return res.status(404).send("Product not found");
+      }
       return res.status(201).send("Product added to cart");
     } catch (e) {
       const errorMessage = `Error in cartController add cartItem : ${e.message}`;
