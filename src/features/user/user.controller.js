@@ -29,7 +29,7 @@ export default class userController {
       const token = jwt.sign(
         { id: user._id.toString(), email: user.email },
         "LJ6jaSuuScTh3xPSS5xkhZJx1gmMWm05",
-        { expiresIn: "1h" }
+        { expiresIn: "2h" },
       );
       //add console to log tokem from line : 29
       return res.status(200).send({ token, msg: "logged in successfully" });
